@@ -3,7 +3,9 @@
 # Date: April 29, 2025
 # King of the Ants
 
-# Class for Game
+# Import library for handling randomness
+import random
+
 population = 100
 gold = 100
 power = 100
@@ -50,7 +52,7 @@ class Event:
     decisions: list[str] = []
     
     def effect(self, decision):
-        print(f"You Picked {decision}")
+        print(f"You picked {decision}")
     
     # Flags
     inclusion_flags: list[str] = []
@@ -65,10 +67,59 @@ class Event:
     min_power = 0
     max_power = -1
 
+current_event: Event = Event()
+event_list: list[Event] = []
+
+def get_unlocked_events() -> list[Event]:
+    # Initialize a list to hold the unlocked events
+    unlocked_events = []
+    # Go through every event in event list
+    for event in event_list:
+        # Check if it is available
+        if event.available():
+            # If it is, append it to the list
+            unlocked_events.append(event)
+    # Return the completed list
+    return unlocked_events
+
+def random_event():
+    # Get list of available events
+    unlocked_events = get_unlocked_events()
+    # Initialize variable to hold sum of weights
+    sum_of_weights = 0
+    # Loop through every unlocked event
+    # And add up all the weights
+    for event in unlocked_events:
+        # A weight of -1 is a priority event
+        if event.weight == -1:
+            # Return it immediately
+            return event
+        else:
+            # Increment sum of weights by event's weight
+            sum_of_weights += event.weight
+    # Generate a random number between 0 and sum of weights
+    rand_num = random.randint(0, sum_of_weights)
+    # Initialize a variable that accounts for the weight of previous events
+    weight_heap = 0
+    # Loop through every unlocked event
+    for event in unlocked_events:
+        # minimum boundary
+        min_bound = weight_heap
+        # maximum boundary
+        max_bound = weight_heap + event.weight
+        # Check if the random number falls within the boundary
+        if (min_bound <= rand_num <= max_bound):
+            # If it does, return the event
+            return event
+        else:
+            # Increment weight heap by the event's weight
+            weight_heap += event.weight
 
 
 
 def game_loop():
+    # Get random unlocked event
+    current_event = random_event()
     print(gold)
 
 

@@ -43,7 +43,7 @@ class Event:
         return True
 
     # I decided to keep it as a number
-    weight = 1
+    weight = 0
 
     def synopsis(self):
         pass
@@ -66,6 +66,34 @@ class Event:
     max_gold = -1
     min_power = 0
     max_power = -1
+
+# Function that will only be called once
+# Creates all the events
+def make_events() -> list[Event]:
+    # Template event [With Comments]
+    def template_event_with_comments():
+        # Instantiate new event
+        event = Event()
+        # Define Synopsis
+        def event_synopsis(self):
+            pass
+        # Set event's synopsis to defined function
+        event.synopsis = event_synopsis
+        # Set and Define Effect
+        def event_effect(self, decision):
+            pass
+        # Set event's effect to defined function
+        event.effect = event_effect
+    
+    # Template event [Without Comments]
+    def template_event():
+        event = Event()
+        def event_synopsis(self):
+            pass
+        event.synopsis = event_synopsis
+        def event_effect(self, decision):
+            pass
+        event.effect = event_effect
 
 current_event: Event = Event()
 event_list: list[Event] = []

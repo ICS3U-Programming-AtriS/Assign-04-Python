@@ -279,13 +279,13 @@ def make_events() -> list[Event]:
                     util.red(f"Your army slays the bandits and loots their corpses. ")
                     util.green("[+1000 GOLD]\n")
                     gold += 1000
+                    add_flag("BANDITS_VANQUISHED")
                 else:
                     util.red(f"Your army fails to prevent the carnage. ")
                     util.red("[-50 POPULATION] ")
                     population -= 50
                     util.red("[-25 POWER]\n")
                     power -= 20
-                    add_flag("BANDITS_VANQUISHED")
             elif decision == "IGNORE":
                 util.grey("Nothing ever happens... ")
                 util.red("[-95 POPULATION]\n")
@@ -515,6 +515,7 @@ def main():
             util.red("This is all your fault.\n")
             # 1F480 is the unicode for the skull emoji
             util.red("You lost. \u1F480 \n")
+            break
             
 
 

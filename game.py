@@ -511,10 +511,10 @@ def main():
         # Check if population is less than or equal to 0
         if population <= 0:
             # LOSS
+            util.red("The population has been eradicated.\n")
             util.red("Your kingdom has fallen. The colony is no more.\n")
             util.red("This is all your fault.\n")
-            # 1F480 is the unicode for the skull emoji
-            util.red("You lost. \u1F480 \n")
+            util.red("You lost. \n")
             break
             
 

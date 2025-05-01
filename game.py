@@ -271,7 +271,7 @@ def make_events() -> list[Event]:
                 util.purple("[Bandit Leader] Duarf, Goblin Slayer\n")
                 util.purple("You truly are a Fraud. ")
                 util.red("[-300 GOLD]\n")
-                gold -= 20
+                gold -= 300
             elif decision == "KILL":
                 util.grey(f"Bandit Army Power: 300\n")
                 util.grey(f"Your Power: {power}\n")
@@ -338,7 +338,7 @@ def make_events() -> list[Event]:
             util.orange("I was blessed with strength. \n")
             util.orange("With my blade, kingdoms were erased. \n")
             util.orange("I will offer you my service in exchange for your riches. \n")
-            util.orange("1000 gold will suffice.")
+            util.orange("1000 gold will suffice. \n")
         event.synopsis = event_synopsis
         event.question = "What do you decide to do? (accept/refuse): "
         event.decisions = ["ACCEPT", "REFUSE"]
@@ -374,8 +374,12 @@ def make_events() -> list[Event]:
         event = Event()
         event.name = "Extortment"
         def event_synopsis(self):
-            pass
-        event.question = ""
+            util.red("[Homeless Assasin] Tojiro, Heavenly Demon\n")
+            util.red("I was blessed with strength. \n")
+            util.red("With my blade, kingdoms were erased. \n")
+            util.red("I will offer you my service in exchange for your riches. \n")
+            util.red("1000 gold will suffice. \n")
+        event.question = "What do you decide to do? (accept/refuse): "
         event.decisions = []
         event.synopsis = event_synopsis
         def event_effect(self, decision):
@@ -504,6 +508,14 @@ def game_loop():
 def main():
     while True:
         game_loop()
+        # Check if population is less than or equal to 0
+        if population <= 0:
+            # LOSS
+            util.red("Your kingdom has fallen. The colony is no more.\n")
+            util.red("This is all your fault.\n")
+            # 1F480 is the unicode for the skull emoji
+            util.red("You lost. \u1F480 \n")
+            
 
 
 if __name__ == "__main__":

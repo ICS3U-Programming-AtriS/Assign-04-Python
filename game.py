@@ -7,6 +7,8 @@
 import random
 # Import util.py, used for input+output
 import util
+# Import math, used for rounding
+import math
 
 # Initial stats
 population = 100
@@ -28,11 +30,11 @@ class Event:
                     return False
                 
         # Check if the user meets the minimum stat criteria
-        if (gold < self.min_population):
+        if (population < self.min_population):
             return False
         if (gold < self.min_gold):
             return False
-        if (gold < self.min_power):
+        if (power < self.min_power):
             return False
         # Check if the user meets the maximum stat criteria
         if (self.max_population != -1) and (population > self.max_population):
@@ -370,25 +372,147 @@ def make_events() -> list[Event]:
         return event
     add_event(reinforcements2())
 
-    def fire_nation_1():
+    def fire_nation_extortion():
         event = Event()
         event.name = "Extortment"
-        def event_synopsis(self):
-            util.red("[Homeless Assasin] Tojiro, Heavenly Demon\n")
-            util.red("I was blessed with strength. \n")
-            util.red("With my blade, kingdoms were erased. \n")
-            util.red("I will offer you my service in exchange for your riches. \n")
-            util.red("1000 gold will suffice. \n")
-        event.question = "What do you decide to do? (accept/refuse): "
-        event.decisions = []
+        def event_synopsis():
+            util.red("[Fire Nation Scout] Zeko, fire ant\n")
+            util.red("I represent the First Nation. \n")
+            util.red("I am here to collect our tribute. \n")
+            util.red("We deserve it because we are awesome and cool. \n")
+            util.red("Anyways, 100 gold, pay up right now. \n")
+        event.question = "What do you decide to do? (pay/refuse): "
+        event.decisions = ["PAY", "REFUSE"]
         event.synopsis = event_synopsis
-        def event_effect(self, decision):
-            pass
+        def event_effect(decision):
+            global gold
+            if decision == "PAY":
+                util.red("[Fire Nation Scout] Zeko, fire ant\n")
+                util.red("Thanks for being smart! ")
+                util.red("[-100 GOLD] \n")
+                gold -= 100
+            elif decision == "REFUSE":
+                util.red("[Fire Nation Scout] Zeko, fire ant\n")
+                util.red("The Fire Nation shall remember this! \n")
+                util.red("You have just guaranteed your demise. \n")
+                add_flag("FIRE_NATION_CONFLICT")
         event.effect = event_effect
-        event.inclusion_flags = []
-        event.exclusion_flags = []
-        event.weight = 0
+        event.inclusion_flags = ["TUTORIAL_COMPLETE"]
+        event.exclusion_flags = ["FIRE_NATION_CONFLICT"]
+        event.weight = 1
+        event.min_gold = 100
         return event
+    add_event(fire_nation_extortion())
+
+    def fire_nation_revenge():
+        event = Event()
+        event.name = "The Fire Nation Attacks"
+        def event_synopsis():
+            util.red("[Fire Nation Scout] Zeko, fire ant\n")
+            util.red("The Fire Nation never forgets... \n")
+        event.question = "... (continue): "
+        event.decisions = ["CONTINUE"]
+        event.synopsis = event_synopsis
+        def event_effect(decision):
+            global population
+            global power
+            util.grey(f"Fire Nation Power: 2000\n")
+            util.grey(f"Your Power: {power}\n")
+            if power >= 2000:
+                    util.red(f"A fierce battle takes place... \n")
+                    util.green("Ultimately, your colony is the victor. \n")
+                    util.grey("The Fire Nation Army has been wiped out. \n")
+                    util.grey("The land of the Fire Nation is now under your rule. ")
+                    util.green("[+50000 POPULATION]\n")
+                    population += 50000
+                    add_flag("FIRE_NATION_CONFLICT_END")
+            else:
+                    util.red(f"Your colony is brutally wiped out. ")
+                    util.red(f"[-{population} POPULATION] ")
+                    population -= population
+
+        event.effect = event_effect
+        event.inclusion_flags = ["FIRE_NATION_CONFLICT"]
+        event.exclusion_flags = ["FIRE_NATION_CONFLICT_END"]
+        event.weight = 2
+        return event
+    add_event(fire_nation_revenge())
+
+    def tax_collection():
+        event = Event()
+        event.name = "Tax Collection"
+        def event_synopsis():
+            util.blue("[ROYAL ADVISOR] Vexel\n")
+            util.blue("It's time to collect taxes, my liege.\n")
+        event.synopsis = event_synopsis
+        event.question = "Do you tax the colony? (yes/no): "
+        event.decisions = ["YES", "NO"]
+        def event_effect(decision):
+            global population
+            global gold
+            global power
+            if decision == "YES":
+                util.grey("Very well. Our treasuries shall prosper.")
+                util.green(f"[+{population} GOLD]\n")
+                gold += population
+                power += 100
+            elif decision == "NO":
+                util.blue("[ROYAL ADVISOR] Vexel\n")
+                util.blue("A weird decision. But Nevertheless, I shall trust your judgement.\n")
+                util.grey("The people are happy, and the colony grows. ")
+                util.green("[+100 POPULATION]\n")
+                population += 100
+        event.effect = event_effect
+        event.inclusion_flags = ["TUTORIAL_COMPLETE"]
+        event.exclusion_flags = []
+        event.weight = 1
+        return event
+    add_event(tax_collection())
+
+    def deja_vu():
+        event = Event()
+        event.name = "Tax Collection"
+        def event_synopsis():
+            util.red("[Gambling Addict] Barbable from Liechtenstein\n")
+            util.red("I challenge thee to a game of rock, paper, scissors! \n")
+        event.synopsis = event_synopsis
+        event.question = "What do you pick? (rock/paper/scissors): "
+        event.decisions = ["ROCK", "PAPER", "SCISSORS"]
+        def event_effect(decision):
+            global population
+            global gold
+            global power
+            if decision == "ROCK":
+                util.grey("Barbable picked Paper. \n")
+                util.grey("Paper beats Rock. You lost the round. \n")
+                util.grey("Barable spits on your colony, inflicting a terrible disease. \n")
+                util.grey("Society crumbles... ")
+                util.red(f"[-{math.floor(population*0.5 + 1)} POPULATION]\n")
+                population -= math.floor(population*0.5 + 1)
+            elif decision == "PAPER":
+                util.grey("Barbable picked Scissors \n")
+                util.grey("Scissors beats Paper. You lost the round. \n")
+                util.grey("Barable steals from your treasury. \n")
+                util.grey("It is her prize for winning. ")
+                util.red(f"[-{math.floor(gold*0.5 + 1)} GOLD]\n")
+                gold -= math.floor(gold*0.5 + 1)
+            elif decision == "SCISSORS":
+                util.grey("Barbable picked Rock \n")
+                util.grey("Rock beats Scissors. You lost the round. \n")
+                util.grey("Your pair of scissors broke in the process. \n")
+                util.grey("It was a valuable weapon... ")
+                util.red(f"[-100 POWER] \n")
+                power -= 100
+
+        event.effect = event_effect
+        event.inclusion_flags = ["TUTORIAL_COMPLETE"]
+        event.exclusion_flags = []
+        event.weight = 1
+        event.min_gold = 20
+        event.min_power = 110
+        return event
+    add_event(deja_vu())
+
 
 
 
@@ -511,12 +635,13 @@ def main():
         # Check if population is less than or equal to 0
         if population <= 0:
             # LOSS
-            util.red("The population has been eradicated.\n")
+            util.red("Your population has been eradicated.\n")
             util.red("Your kingdom has fallen. The colony is no more.\n")
             util.red("This is all your fault.\n")
             util.red("You lost. \n")
+            # BREAK
             break
-            
+        # [ END ]
 
 
 if __name__ == "__main__":

@@ -5,8 +5,10 @@
 
 # Import library for handling randomness
 import random
+
 # Import util.py, used for input+output
 import util
+
 # Import math, used for rounding
 import math
 
@@ -23,18 +25,18 @@ class Event:
         for flag in self.inclusion_flags:
             if flag not in user_flags:
                 return False
-        
+
         # Check if the user does not have the blacklisted flags
         for flag in self.exclusion_flags:
-                if flag in user_flags:
-                    return False
-                
+            if flag in user_flags:
+                return False
+
         # Check if the user meets the minimum stat criteria
-        if (population < self.min_population):
+        if population < self.min_population:
             return False
-        if (gold < self.min_gold):
+        if gold < self.min_gold:
             return False
-        if (power < self.min_power):
+        if power < self.min_power:
             return False
         # Check if the user meets the maximum stat criteria
         if (self.max_population != -1) and (population > self.max_population):
@@ -43,7 +45,7 @@ class Event:
             return False
         if (self.max_power != -1) and (power > self.max_power):
             return False
-        
+
         # Once all checks are passed, return True
         return True
 
@@ -56,10 +58,10 @@ class Event:
     question: str = "Do you understand? (yes/no): "
     # ALL DECISIONS MUST BE UPPERCASE
     decisions: list[str] = ["YES", "NO"]
-    
+
     def effect(self, decision):
         print(f"You picked {decision}")
-    
+
     # Flags
     inclusion_flags: list[str] = []
     exclusion_flags: list[str] = []
@@ -76,16 +78,21 @@ class Event:
     # Event Name
     name = "Event Name"
 
+
 # Function for adding a flag
 def add_flag(flag_name: str):
     if flag_name not in user_flags:
         user_flags.append(flag_name)
 
+
 event_list: list[Event] = []
+
 
 # Function for adding event to event_list
 def add_event(event: Event):
     event_list.append(event)
+
+
 # Function that will only be called once
 # ################################################
 # Creates all the events
@@ -97,17 +104,21 @@ def make_events() -> list[Event]:
         event = Event()
         # Set event name
         event.name = "template"
+
         # Define Synopsis
         def event_synopsis():
             pass
+
         # Set event's synopsis to defined function
         event.synopsis = event_synopsis
         # Set question and decisions
         event.question = ""
         event.decisions = []
+
         # Set and Define Effect
         def event_effect(decision):
             pass
+
         # Set event's effect to defined function
         event.effect = event_effect
         # Set flags
@@ -116,36 +127,45 @@ def make_events() -> list[Event]:
         # Set weight
         event.weight = 0
         # Set Other Stuff If Needed
-    
+
     # Template event [Without Comments]
     def template_event():
         event = Event()
         event.name = "Template"
+
         def event_synopsis():
             pass
+
         event.question = ""
         event.decisions = []
         event.synopsis = event_synopsis
+
         def event_effect(decision):
             pass
+
         event.effect = event_effect
         event.inclusion_flags = []
         event.exclusion_flags = []
         event.weight = 0
         return event
-    
+
     # Introduction
     def intro():
         event = Event()
         event.name = "Introduction"
+
         def event_synopsis():
             util.blue("[ROYAL ADVISOR] Vexel\n")
             util.blue("Your Majesty, you have awakened at last.\n")
             util.blue("Forgive my intrusion, but time is of the essence.\n")
-            util.blue("The colony awaits your command, and your wisdom is needed now more than ever.\n")
+            util.blue(
+                "The colony awaits your command, and your wisdom is needed now more than ever.\n"
+            )
+
         event.synopsis = event_synopsis
         event.question = "Do you understand your role, my liege? (yes/no): "
         event.decisions = ["YES", "NO"]
+
         def event_effect(decision):
             util.blue("[ROYAL ADVISOR] Vexel\n")
             if decision == "YES":
@@ -153,13 +173,17 @@ def make_events() -> list[Event]:
                 util.blue("Let's continue.\n")
             elif decision == "NO":
                 util.blue("Ah, a jest, perhaps?\n")
-                util.blue("No matter--your instincts shall guide you, as they always have.\n")
+                util.blue(
+                    "No matter--your instincts shall guide you, as they always have.\n"
+                )
             add_flag("INTRO_COMPLETE")
+
         event.effect = event_effect
         event.inclusion_flags = []
         event.exclusion_flags = ["INTRO_COMPLETE"]
         event.weight = -1
         return event
+
     add_event(intro())
 
     # Tutorial
@@ -175,22 +199,28 @@ def make_events() -> list[Event]:
             util.blue("First: *")
             util.purple("POPULATION")
             util.blue("*. Our strength in numbers. It is our greatest strength.\n")
-            util.blue("This is the most important pillar and must be upheld at all times\n")
+            util.blue(
+                "This is the most important pillar and must be upheld at all times\n"
+            )
             util.blue("Without it, our goal, is nothing but a lofty dream.\n")
             util.blue("\n")
             util.blue("Second: *")
             util.yellow("GOLD")
             util.blue("*. The foundation of our economy. ")
-            util.blue("It funds our expansion, our armies, and the future of the colony.\n")
+            util.blue(
+                "It funds our expansion, our armies, and the future of the colony.\n"
+            )
             util.blue("\n")
             util.blue("Third: *")
             util.red("POWER")
-            util.blue("*. The measure of your might. When battle comes, it is this that determines victory or defeat.\n")
+            util.blue(
+                "*. The measure of your might. When battle comes, it is this that determines victory or defeat.\n"
+            )
             util.blue("\n")
             util.blue("Every decision you make shall shape these forces. ")
-            util.blue("Balance them wisely, for the fate of the empire lies in your hands.\n")
-
-
+            util.blue(
+                "Balance them wisely, for the fate of the empire lies in your hands.\n"
+            )
 
         event.synopsis = event_synopsis
         event.question = "Shall we proceed, Your Majesty? (yes): "
@@ -210,19 +240,25 @@ def make_events() -> list[Event]:
         event.exclusion_flags = ["TUTORIAL_COMPLETE"]
         event.weight = -1
         return event
+
     add_event(tutorial())
 
     # A Helping Hand
     def incident1():
         event = Event()
         event.name = "A stroll in the kingdom"
+
         def event_synopsis():
             util.grey("As you are taking a stroll outside the palace, \n")
-            util.grey("you notice a fellow ant that is trapped under a slump of mashed banana.\n")
+            util.grey(
+                "you notice a fellow ant that is trapped under a slump of mashed banana.\n"
+            )
             util.blue("He begs for a helping hand.\n")
+
         event.synopsis = event_synopsis
         event.question = "What do you decide to do? (help/kill/ignore): "
         event.decisions = ["HELP", "KILL", "IGNORE"]
+
         def event_effect(decision):
             global population
             global gold
@@ -238,7 +274,9 @@ def make_events() -> list[Event]:
                 population -= 1
                 util.green("[+10 POWER]\n")
                 power += 10
-                util.grey("Bystanders watch in shock as you ransack the remaining parts of his dead body. ")
+                util.grey(
+                    "Bystanders watch in shock as you ransack the remaining parts of his dead body. "
+                )
                 util.green("[+10 GOLD]\n")
                 gold += 10
             elif decision == "IGNORE":
@@ -247,24 +285,29 @@ def make_events() -> list[Event]:
                 population -= 1
 
             add_flag("INCIDENT1")
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = ["INCIDENT1"]
         event.weight = 1
         return event
+
     add_event(incident1())
 
     # A fateful encounter
     def incident2():
         event = Event()
         event.name = "Echoes of Power"
+
         def event_synopsis():
             util.purple("[Bandit Leader] Duarf, Goblin Slayer\n")
             util.purple("You are a Fraud.\n")
             util.purple("Give me 300 gold. Otherwise, I will burn down your colony.\n")
+
         event.synopsis = event_synopsis
         event.question = "What do you decide to do? (give/kill/ignore): "
         event.decisions = ["GIVE", "KILL", "IGNORE"]
+
         def event_effect(decision):
             global population
             global gold
@@ -292,29 +335,36 @@ def make_events() -> list[Event]:
                 util.grey("Nothing ever happens... ")
                 util.red("[-95 POPULATION]\n")
                 population -= 95
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = ["BANDITS_VANQUISHED"]
         event.weight = 1
         event.min_gold = 300
         return event
+
     add_event(incident2())
 
     def reinforcements1():
         event = Event()
         event.name = "Reinforcement"
+
         def event_synopsis():
             util.blue("[ROYAL ADVISOR] Vexel\n")
             util.blue("Our army is requesting new equipment.\n")
+
         event.synopsis = event_synopsis
         event.question = "What do you decide to do? (accept/refuse): "
         event.decisions = ["ACCEPT", "REFUSE"]
+
         def event_effect(decision):
             global population
             global gold
             global power
             if decision == "ACCEPT":
-                util.grey("Equipment is reforged, strengthing the ranks--at the cost of your treasury. ")
+                util.grey(
+                    "Equipment is reforged, strengthing the ranks--at the cost of your treasury. "
+                )
                 util.red("[-100 GOLD] ")
                 util.green("[+100 power]\n")
                 gold -= 100
@@ -324,26 +374,31 @@ def make_events() -> list[Event]:
                 util.blue("Your wish is my command.\n")
                 util.blue("Afterall, we can't just keep spoiling the soldiers.\n")
                 util.blue("They shall continue using their rusty sticks.\n")
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = []
         event.weight = 1
         event.min_gold = 100
         return event
+
     add_event(reinforcements1())
 
     def reinforcements2():
         event = Event()
         event.name = "Awakened Mercenary"
+
         def event_synopsis():
             util.orange("[Homeless Assasin] Tojiro, Heavenly Demon\n")
             util.orange("I was blessed with strength. \n")
             util.orange("With my blade, kingdoms were erased. \n")
             util.orange("I will offer you my service in exchange for your riches. \n")
             util.orange("1000 gold will suffice. \n")
+
         event.synopsis = event_synopsis
         event.question = "What do you decide to do? (accept/refuse): "
         event.decisions = ["ACCEPT", "REFUSE"]
+
         def event_effect(decision):
             global population
             global gold
@@ -357,33 +412,40 @@ def make_events() -> list[Event]:
                 add_flag("MERCENARY_OBTAINED")
             elif decision == "REFUSE":
                 util.grey("The mercenary promptly leaves.\n")
-                util.grey("He leaves beind a child in his stead. ")
+                util.grey("He leaves behind a child in his stead. ")
                 util.green("[+1 population]\n")
                 population += 1
                 add_flag("CHILD_OBTAINED")
-                util.grey("In the distance, you can see a reliefed smirk on the mercenary's face. \n")
+                util.grey(
+                    "In the distance, you can see a relieved smirk on the mercenary's face. \n"
+                )
                 util.grey("Perhaps this was his plan all along. \n")
                 util.grey("You will never see him again. \n")
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = ["CHILD_OBTAINED", "MERCENARY_OBTAINED"]
         event.weight = 1
         event.min_gold = 1000
         return event
+
     add_event(reinforcements2())
 
     def fire_nation_extortion():
         event = Event()
         event.name = "Extortment"
+
         def event_synopsis():
             util.red("[Fire Nation Scout] Zeko, fire ant\n")
             util.red("I represent the First Nation. \n")
             util.red("I am here to collect our tribute. \n")
             util.red("We deserve it because we are awesome and cool. \n")
             util.red("Anyways, 100 gold, pay up right now. \n")
+
         event.question = "What do you decide to do? (pay/refuse): "
         event.decisions = ["PAY", "REFUSE"]
         event.synopsis = event_synopsis
+
         def event_effect(decision):
             global gold
             if decision == "PAY":
@@ -396,57 +458,66 @@ def make_events() -> list[Event]:
                 util.red("The Fire Nation shall remember this! \n")
                 util.red("You have just guaranteed your demise. \n")
                 add_flag("FIRE_NATION_CONFLICT")
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = ["FIRE_NATION_CONFLICT"]
         event.weight = 1
         event.min_gold = 100
         return event
+
     add_event(fire_nation_extortion())
 
     def fire_nation_revenge():
         event = Event()
         event.name = "The Fire Nation Attacks"
+
         def event_synopsis():
             util.red("[Fire Nation Scout] Zeko, fire ant\n")
             util.red("The Fire Nation never forgets... \n")
+
         event.question = "... (continue): "
         event.decisions = ["CONTINUE"]
         event.synopsis = event_synopsis
+
         def event_effect(decision):
             global population
             global power
             util.grey(f"Fire Nation Power: 2000\n")
             util.grey(f"Your Power: {power}\n")
             if power >= 2000:
-                    util.red(f"A fierce battle takes place... \n")
-                    util.green("Ultimately, your colony is the victor. \n")
-                    util.grey("The Fire Nation Army has been wiped out. \n")
-                    util.grey("The land of the Fire Nation is now under your rule. ")
-                    util.green("[+50000 POPULATION]\n")
-                    population += 50000
-                    add_flag("FIRE_NATION_CONFLICT_END")
+                util.red(f"A fierce battle takes place... \n")
+                util.green("Ultimately, your colony is the victor. \n")
+                util.grey("The Fire Nation Army has been wiped out. \n")
+                util.grey("The land of the Fire Nation is now under your rule. ")
+                util.green("[+50000 POPULATION]\n")
+                population += 50000
+                add_flag("FIRE_NATION_CONFLICT_END")
             else:
-                    util.red(f"Your colony is brutally wiped out. ")
-                    util.red(f"[-{population} POPULATION] ")
-                    population -= population
+                util.red(f"Your colony is brutally wiped out. ")
+                util.red(f"[-{population} POPULATION] ")
+                population -= population
 
         event.effect = event_effect
         event.inclusion_flags = ["FIRE_NATION_CONFLICT"]
         event.exclusion_flags = ["FIRE_NATION_CONFLICT_END"]
         event.weight = 2
         return event
+
     add_event(fire_nation_revenge())
 
     def tax_collection():
         event = Event()
         event.name = "Tax Collection"
+
         def event_synopsis():
             util.blue("[ROYAL ADVISOR] Vexel\n")
             util.blue("It's time to collect taxes, my liege.\n")
+
         event.synopsis = event_synopsis
         event.question = "Do you tax the colony? (yes/no): "
         event.decisions = ["YES", "NO"]
+
         def event_effect(decision):
             global population
             global gold
@@ -458,26 +529,33 @@ def make_events() -> list[Event]:
                 power += 100
             elif decision == "NO":
                 util.blue("[ROYAL ADVISOR] Vexel\n")
-                util.blue("A weird decision. But Nevertheless, I shall trust your judgement.\n")
+                util.blue(
+                    "A weird decision. But Nevertheless, I shall trust your judgement.\n"
+                )
                 util.grey("The people are happy, and the colony grows. ")
                 util.green("[+100 POPULATION]\n")
                 population += 100
+
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = []
         event.weight = 1
         return event
+
     add_event(tax_collection())
 
     def deja_vu():
         event = Event()
-        event.name = "Tax Collection"
+        event.name = "A Fateful Encounter"
+
         def event_synopsis():
             util.red("[Gambling Addict] Barbable from Liechtenstein\n")
             util.red("I challenge thee to a game of rock, paper, scissors! \n")
+
         event.synopsis = event_synopsis
         event.question = "What do you pick? (rock/paper/scissors): "
         event.decisions = ["ROCK", "PAPER", "SCISSORS"]
+
         def event_effect(decision):
             global population
             global gold
@@ -485,17 +563,19 @@ def make_events() -> list[Event]:
             if decision == "ROCK":
                 util.grey("Barbable picked Paper. \n")
                 util.grey("Paper beats Rock. You lost the round. \n")
-                util.grey("Barable spits on your colony, inflicting a terrible disease. \n")
+                util.grey(
+                    "Barbable spits on your colony, inflicting a terrible disease. \n"
+                )
                 util.grey("Society crumbles... ")
                 util.red(f"[-{math.floor(population*0.5 + 1)} POPULATION]\n")
-                population -= math.floor(population*0.5 + 1)
+                population -= math.floor(population * 0.5 + 1)
             elif decision == "PAPER":
                 util.grey("Barbable picked Scissors \n")
                 util.grey("Scissors beats Paper. You lost the round. \n")
                 util.grey("Barable steals from your treasury. \n")
                 util.grey("It is her prize for winning. ")
                 util.red(f"[-{math.floor(gold*0.5 + 1)} GOLD]\n")
-                gold -= math.floor(gold*0.5 + 1)
+                gold -= math.floor(gold * 0.5 + 1)
             elif decision == "SCISSORS":
                 util.grey("Barbable picked Rock \n")
                 util.grey("Rock beats Scissors. You lost the round. \n")
@@ -511,37 +591,41 @@ def make_events() -> list[Event]:
         event.min_gold = 20
         event.min_power = 110
         return event
+
     add_event(deja_vu())
-
-
-
-
-
 
     # NULL [INACCESSIBLE]
     def null():
         event = Event()
         event.name = "VOID"
+
         def event_synopsis():
             util.black("[FORGOTTEN ONE] NULL\n")
             util.black("You aren't supposed to be here!\n")
+
         event.synopsis = event_synopsis
         event.question = "What? (what): "
         event.decisions = ["WHAT"]
+
         def event_effect(decision):
             util.black("[FORGOTTEN ONE] NULL\n")
             util.black("...\n")
             add_flag("INTRO_COMPLETE")
+
         event.effect = event_effect
         event.inclusion_flags = []
         event.exclusion_flags = []
         event.weight = 0
         return event
+
     add_event(null())
+
+
 # Call make_events()
 make_events()
 
 current_event: Event = Event()
+
 
 def get_unlocked_events() -> list[Event]:
     # Initialize a list to hold the unlocked events
@@ -554,6 +638,7 @@ def get_unlocked_events() -> list[Event]:
             unlocked_events.append(event)
     # Return the completed list
     return unlocked_events
+
 
 def random_event():
     # Get list of available events
@@ -581,7 +666,7 @@ def random_event():
         # maximum boundary
         max_bound = weight_heap + event.weight
         # Check if the random number falls within the boundary
-        if (min_bound <= rand_num <= max_bound):
+        if min_bound <= rand_num <= max_bound:
             # If it does, return the event
             return event
         else:
@@ -607,8 +692,7 @@ def process_event():
     # Display event synopsis
     current_event.synopsis()
     # Get players decision
-    decision = util.get_decision(current_event.question, 
-                                 current_event.decisions)
+    decision = util.get_decision(current_event.question, current_event.decisions)
     # Clear Terminal
     util.clear_terminal()
     # Aftermath
@@ -620,6 +704,7 @@ def process_event():
     util.orange(f"~~~ < {current_event.name} > ~~~\n")
     current_event.effect(decision)
     util.pause()
+
 
 def game_loop():
     # Get random unlocked event

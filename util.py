@@ -24,42 +24,52 @@ ORANGE = "\033[38;5;208m"
 def black(msg: str = ""):
     print(BLACK + msg, end="")
 
+
 # print(msg, end="") but in red
 def red(msg: str = ""):
     print(RED + msg, end="")
+
 
 # print(msg, end="") but in green
 def green(msg: str = ""):
     print(GREEN + msg, end="")
 
+
 # print(msg, end="") but in yellow
 def yellow(msg: str = ""):
     print(YELLOW + msg, end="")
+
 
 # print(msg, end="") but in blue
 def blue(msg: str = ""):
     print(BLUE + msg, end="")
 
+
 # print(msg, end="") but in purple
 def purple(msg: str = ""):
     print(PURPLE + msg, end="")
+
 
 # print(msg, end="") but in cyan
 def cyan(msg: str = ""):
     print(CYAN + msg, end="")
 
+
 # print(msg, end="") but in white
 def white(msg: str = ""):
     print(WHITE + msg, end="")
+
 
 # print(msg, end="") but in grey
 def grey(msg: str = ""):
     # I need flush=True for this because Im using it in pause()
     print(GREY + msg, end="", flush=True)
 
+
 # print(msg, end="") but in orange
 def orange(msg: str = ""):
     print(ORANGE + msg, end="")
+
 
 # Function that gets the player's decision
 def get_decision(question: str, decisions: list) -> str:
@@ -78,9 +88,11 @@ def get_decision(question: str, decisions: list) -> str:
             # Invalid Input
             red("Invalid decision, try again.\n")
 
+
 # Clears the terminal
 def clear_terminal():
-    os.system('clear')
+    os.system("clear")
+
 
 # Function for pausing the terminal
 # Used for allowing the read to read the effects
@@ -101,6 +113,7 @@ def pause():
     # Pause will end once user presses enter
     # Since we are using input()
     input()
+
 
 def display_title():
     yellow("##################################\n")

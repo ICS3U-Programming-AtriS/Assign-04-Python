@@ -84,7 +84,7 @@ def add_flag(flag_name: str):
     if flag_name not in user_flags:
         user_flags.append(flag_name)
 
-
+# Initialize list to hold all the events
 event_list: list[Event] = []
 
 
@@ -127,6 +127,8 @@ def make_events() -> list[Event]:
         # Set weight
         event.weight = 0
         # Set Other Stuff If Needed
+        # Return event
+        return event
 
     # Template event [Without Comments]
     def template_event():
@@ -135,15 +137,14 @@ def make_events() -> list[Event]:
 
         def event_synopsis():
             pass
-
         event.question = ""
         event.decisions = []
         event.synopsis = event_synopsis
 
         def event_effect(decision):
             pass
-
         event.effect = event_effect
+
         event.inclusion_flags = []
         event.exclusion_flags = []
         event.weight = 0
@@ -183,7 +184,6 @@ def make_events() -> list[Event]:
         event.exclusion_flags = ["INTRO_COMPLETE"]
         event.weight = -1
         return event
-
     add_event(intro())
 
     # Tutorial
@@ -240,10 +240,8 @@ def make_events() -> list[Event]:
         event.exclusion_flags = ["TUTORIAL_COMPLETE"]
         event.weight = -1
         return event
-
     add_event(tutorial())
 
-    # A Helping Hand
     def incident1():
         event = Event()
         event.name = "A stroll in the kingdom"
@@ -291,7 +289,6 @@ def make_events() -> list[Event]:
         event.exclusion_flags = ["INCIDENT1"]
         event.weight = 1
         return event
-
     add_event(incident1())
 
     def incident2():
@@ -341,7 +338,6 @@ def make_events() -> list[Event]:
         event.weight = 1
         event.min_gold = 300
         return event
-
     add_event(incident2())
 
     def reinforcements1():
@@ -365,9 +361,13 @@ def make_events() -> list[Event]:
                     "Equipment is reforged, strengthening the ranks--at the cost of your treasury. "
                 )
                 util.red("[-100 GOLD] ")
-                util.green("[+100 power]\n")
                 gold -= 100
-                power += 100
+                if "FIRE_NATION_CONFLICT_END" in user_flags:
+                    util.green(f"[+{300 + power} POWER]\n")
+                    power += 300 + power
+                else:
+                    util.green("[+100 POWER]\n")
+                    power += 100
             elif decision == "REFUSE":
                 util.blue("[ROYAL ADVISOR] Vexel\n")
                 util.blue("Your wish is my command.\n")
@@ -380,7 +380,6 @@ def make_events() -> list[Event]:
         event.weight = 1
         event.min_gold = 100
         return event
-
     add_event(reinforcements1())
 
     def reinforcements2():
@@ -427,7 +426,6 @@ def make_events() -> list[Event]:
         event.weight = 1
         event.min_gold = 1000
         return event
-
     add_event(reinforcements2())
 
     def fire_nation_extortion():
@@ -464,7 +462,6 @@ def make_events() -> list[Event]:
         event.weight = 1
         event.min_gold = 100
         return event
-
     add_event(fire_nation_extortion())
 
     def fire_nation_revenge():
@@ -502,7 +499,6 @@ def make_events() -> list[Event]:
         event.exclusion_flags = ["FIRE_NATION_CONFLICT_END"]
         event.weight = 2
         return event
-
     add_event(fire_nation_revenge())
 
     def tax_collection():
@@ -529,18 +525,22 @@ def make_events() -> list[Event]:
             elif decision == "NO":
                 util.blue("[ROYAL ADVISOR] Vexel\n")
                 util.blue(
-                    "A weird decision. But Nevertheless, I shall trust your judgement.\n"
+                    "A weird decision. Nevertheless, I shall trust your judgement.\n"
                 )
                 util.grey("The people are happy, and the colony grows. ")
-                util.green("[+100 POPULATION]\n")
-                population += 100
+                if "FIRE_NATION_CONFLICT_END" in user_flags:
+                    util.green(f"[+{3000 + population//2} POPULATION]\n")
+                    population += 3000 + population//2
+                else:
+                    util.green("[+100 POPULATION]\n")
+                    population += 100
 
         event.effect = event_effect
         event.inclusion_flags = ["TUTORIAL_COMPLETE"]
         event.exclusion_flags = []
         event.weight = 1
+        event.max_population = 1_000_000_00
         return event
-
     add_event(tax_collection())
 
     def deja_vu():
@@ -569,14 +569,14 @@ def make_events() -> list[Event]:
                 util.red(f"[-{math.floor(population*0.5 + 1)} POPULATION]\n")
                 population -= math.floor(population * 0.5 + 1)
             elif decision == "PAPER":
-                util.grey("Barbable picked Scissors \n")
+                util.grey("Barbable picked Scissors. \n")
                 util.grey("Scissors beats Paper. You lost the round. \n")
                 util.grey("Barable steals from your treasury. \n")
                 util.grey("It is her prize for winning. ")
                 util.red(f"[-{math.floor(gold*0.5 + 1)} GOLD]\n")
                 gold -= math.floor(gold * 0.5 + 1)
             elif decision == "SCISSORS":
-                util.grey("Barbable picked Rock \n")
+                util.grey("Barbable picked Rock. \n")
                 util.grey("Rock beats Scissors. You lost the round. \n")
                 util.grey("Your pair of scissors broke in the process. \n")
                 util.grey("It was a valuable weapon... ")
@@ -590,7 +590,6 @@ def make_events() -> list[Event]:
         event.min_gold = 20
         event.min_power = 110
         return event
-
     add_event(deja_vu())
 
     def reinforcements3():
@@ -618,19 +617,158 @@ def make_events() -> list[Event]:
                 util.grey("All soldiers of your army gain an extra pair of limbs. \n")
                 util.grey("Some even gain wings. \n")
                 util.grey("Your army is much more mighty. ")
-                util.green(f"[+{power} POWER] \n")
-                power += power
+                util.green(f"[+{power*5} POWER] \n")
+                power += power*5
                 
             elif decision == "REFUSE":
                 util.purple("[Mad Scientist] Sinko\n")
                 util.purple("... >> \n")
-                
+
         event.effect = event_effect
         event.inclusion_flags = ["FIRE_NATION_CONFLICT_END"]
         event.exclusion_flags = []
-        event.weight = 1
+        event.weight = 3
         event.min_gold = 100000
+        event.max_power = 1_000_000_000
         return event
+    add_event(reinforcements3())
+
+    def dragon1():
+        event = Event()
+        event.name = "Slaying the Dragon [1/3]"
+
+        def event_synopsis():
+            util.blue("[ROYAL ADVISOR] Vexel\n")
+            util.blue("A suspicious cave has been spotted in the distance.\n")
+            util.blue("Shall we send some soldiers to go investigate it? \n")
+
+        event.question = "Do you send soldiers? (yes/no): "
+        event.decisions = ["YES", "NO"]
+        event.synopsis = event_synopsis
+
+        def event_effect(decision):
+            global population
+            global power
+            if decision == "YES":
+                util.grey("The soliders never came back... ")
+                util.red("[-100 POPULATION] ")
+                population -= 100
+                util.red(f"[-{power//3} POWER] \n")
+                power -= power//3
+                add_flag("CAVE_INVESTIGATED")
+            elif decision == "NO":
+                util.blue("[ROYAL ADVISOR] Vexel\n")
+                util.blue("I will trust your decision, my liege.\n")
+                util.blue("It is better to not cross uncharted territories. \n")
+                util.grey("A sudden fire breaks out in the colony... \n")
+                util.grey("All the witnesses are dead. ")
+                util.red(f"[-{1000 + population//4} POPULATION] \n")
+                population -= 1000 + population//4
+            
+        event.effect = event_effect
+        event.inclusion_flags = ["FIRE_NATION_CONFLICT_END"]
+        event.exclusion_flags = ["CAVE_INVESTIGATED"]
+        event.weight = 3
+        return event
+    add_event(dragon1())
+
+    def dragon2():
+        event = Event()
+        event.name = "Slaying the Dragon [2/3]"
+
+        def event_synopsis():
+            util.blue("[ROYAL ADVISOR] Vexel\n")
+            util.blue("Rumours about a dragon are circulating around our colony. \n")
+            util.blue("I suspect that this dragon truly exists. \n")
+            util.blue("I saw it with my two own very eyes. \n")
+            util.blue("This must've been the dragon that killed our men. \n")
+            util.blue("It's lurking around the very cave we sent our men to. \n")
+            util.blue("Do you think the kingdom is ready to defeat it? \n")
+
+        event.question = "Should we take down the dragon? (yes/no): "
+        event.decisions = ["YES", "NO"]
+        event.synopsis = event_synopsis
+
+        def event_effect(decision):
+            global population
+            global power
+            if decision == "YES":
+                util.blue("[ROYAL ADVISOR] Vexel\n")
+                util.blue("Very well, my majesty. \n")
+                util.blue("I shall gather the entirety of our forces. \n")
+                util.blue("The dragon stands no chance against our mighty army. \n")
+                util.blue("Our battle shall commence the very next dawn. \n")
+                add_flag("ENGAGE_DRAGON")
+            elif decision == "NO":
+                util.blue("[ROYAL ADVISOR] Vexel\n")
+                util.blue("I shall heed your command. \n")
+                util.blue("The dragon shall live on for a couple more days. \n")
+                util.grey("A sudden fire breaks out in the colony... \n")
+                util.grey("All the witnesses are dead. ")
+                util.red(f"[-{600 + population//5} POPULATION] \n")
+                population -= 600 + population//5
+                
+        event.effect = event_effect
+        event.inclusion_flags = ["CAVE_INVESTIGATED"]
+        event.exclusion_flags = ["ENGAGE_DRAGON"]
+        event.weight = 1
+        return event
+    add_event(dragon2())
+
+    def dragon3():
+        event = Event()
+        event.name = "Slaying the Dragon [3/3] [FINAL]"
+
+        def event_synopsis():
+            util.grey("It is time to face the dragon ... \n")
+
+        event.question = "... (continue): "
+        event.decisions = ["CONTINUE"]
+        event.synopsis = event_synopsis
+
+        def event_effect(decision):
+            global population
+            global power
+            global gold
+            util.grey(f"Dragon power: 500000000\n")
+            util.grey(f"Your Power: {power}\n")
+            if power >= 500000000:
+                util.red(f"The showdown finally takes place... \n")
+                util.red(f"The battle is intense and losses were made. \n")
+                util.red(f"[-{population//2} POPULATION] ")
+                population -= population//2
+                util.red(f"[-{power//2} POWER] \n")
+                population -= power//2
+                util.green("But, in the end, your colony won. \n")
+                util.grey("The mighty dragon has been defeated. \n")
+                util.grey("The dragon's treasure is now yours. ")
+                util.green("[+1000000000 GOLD] \n")
+                gold += 1000000000
+                util.grey("News of your deed spreads... ")
+                util.green("[+1000000000 POWER] \n")
+                power += 1000000000
+                util.grey("Peace has been restored to the lands... \n")
+                util.grey("You are now acknowledged as the king of the world. \n")
+                util.yellow("Earth is now under your rule. \n")
+                util.yellow("[+100000000000 POPULATION] \n")
+                population += 100000000000
+            else:
+                util.red(f"The dragon tears through your army. ")
+                util.red(f"[-{power} POWER] \n")
+                population -= power
+                util.red(f"The dragon steals all your gold. ")
+                util.red(f"[-{gold} GOLD] \n")
+                gold -= gold
+                util.red(f"The dragon eradicates your colony. ")
+                util.red(f"[-{population} POPULATION] \n")
+                population -= population
+
+        event.effect = event_effect
+        event.inclusion_flags = ["ENGAGE_DRAGON"]
+        event.exclusion_flags = []
+        event.weight = -1
+        return event
+    add_event(dragon3())
 
 
     # NULL [INACCESSIBLE]
@@ -663,6 +801,7 @@ def make_events() -> list[Event]:
 # Call make_events()
 make_events()
 
+# Initialize current_event
 current_event: Event = Event()
 
 
@@ -712,13 +851,13 @@ def random_event():
             # Increment weight heap by the event's weight
             weight_heap += event.weight
 
-
+# Function that displays all stats
 def display_stats():
     util.purple(f"POPULATION: {population}, ")
     util.yellow(f"GOLD: {gold}, ")
     util.red(f"POWER: {power}\n")
 
-
+# Function that manages the event
 def process_event():
     # Clear Terminal
     util.clear_terminal()
@@ -744,7 +883,7 @@ def process_event():
     current_event.effect(decision)
     util.pause()
 
-
+# GAME LOOP
 def game_loop():
     # Get random unlocked event
     global current_event
@@ -754,6 +893,9 @@ def game_loop():
 
 
 def main():
+    print(event_list)
+    # Keep on looping indefinitely
+    # Until user wins or loses
     while True:
         game_loop()
         # Check if population is less than or equal to 0
@@ -764,6 +906,12 @@ def main():
             util.red("This is all your fault.\n")
             util.red("You lost. \n")
             # BREAK
+            break
+        elif population >= 1_000_000_000:
+            util.green("The kindom is thriving.\n")
+            util.green("No one dares to challenge you anymore.\n")
+            util.green("The colony shall never fall as long as you rule.\n")
+            util.green("You win. \n")
             break
         # [ END ]
 

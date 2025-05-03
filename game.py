@@ -294,7 +294,6 @@ def make_events() -> list[Event]:
 
     add_event(incident1())
 
-    # A fateful encounter
     def incident2():
         event = Event()
         event.name = "Echoes of Power"
@@ -363,7 +362,7 @@ def make_events() -> list[Event]:
             global power
             if decision == "ACCEPT":
                 util.grey(
-                    "Equipment is reforged, strengthing the ranks--at the cost of your treasury. "
+                    "Equipment is reforged, strengthening the ranks--at the cost of your treasury. "
                 )
                 util.red("[-100 GOLD] ")
                 util.green("[+100 power]\n")
@@ -389,7 +388,7 @@ def make_events() -> list[Event]:
         event.name = "Awakened Mercenary"
 
         def event_synopsis():
-            util.orange("[Homeless Assasin] Tojiro, Heavenly Demon\n")
+            util.orange("[Homeless Assassin] Tojiro, Heavenly Demon\n")
             util.orange("I was blessed with strength. \n")
             util.orange("With my blade, kingdoms were erased. \n")
             util.orange("I will offer you my service in exchange for your riches. \n")
@@ -437,7 +436,7 @@ def make_events() -> list[Event]:
 
         def event_synopsis():
             util.red("[Fire Nation Scout] Zeko, fire ant\n")
-            util.red("I represent the First Nation. \n")
+            util.red("I represent the Fire Nation. \n")
             util.red("I am here to collect our tribute. \n")
             util.red("We deserve it because we are awesome and cool. \n")
             util.red("Anyways, 100 gold, pay up right now. \n")
@@ -495,7 +494,7 @@ def make_events() -> list[Event]:
                 add_flag("FIRE_NATION_CONFLICT_END")
             else:
                 util.red(f"Your colony is brutally wiped out. ")
-                util.red(f"[-{population} POPULATION] ")
+                util.red(f"[-{population} POPULATION] \n")
                 population -= population
 
         event.effect = event_effect
@@ -593,6 +592,46 @@ def make_events() -> list[Event]:
         return event
 
     add_event(deja_vu())
+
+    def reinforcements3():
+        event = Event()
+        event.name = "Mutation"
+
+        def event_synopsis():
+            util.purple("[Mad Scientist] Sinko\n")
+            util.purple("I have a proposition >> \n")
+            util.purple("I've invented a potion that can grant ants special abilities.\n")
+            util.purple("With enough funds, I can grant every member of your army a potion.\n")
+
+        event.synopsis = event_synopsis
+        event.question = "What do you decide to do? (accept/refuse): "
+        event.decisions = ["ACCEPT", "REFUSE"]
+
+        def event_effect(decision):
+            global population
+            global gold
+            global power
+            if decision == "ACCEPT":
+                util.grey("Drinks are readily provided to all members of your army. ")
+                util.red("[-100000 GOLD] \n")
+                gold -= 100000
+                util.grey("All soldiers of your army gain an extra pair of limbs. \n")
+                util.grey("Some even gain wings. \n")
+                util.grey("Your army is much more mighty. ")
+                util.green(f"[+{power} POWER] \n")
+                power += power
+                
+            elif decision == "REFUSE":
+                util.purple("[Mad Scientist] Sinko\n")
+                util.purple("... >> \n")
+                
+        event.effect = event_effect
+        event.inclusion_flags = ["FIRE_NATION_CONFLICT_END"]
+        event.exclusion_flags = []
+        event.weight = 1
+        event.min_gold = 100000
+        return event
+
 
     # NULL [INACCESSIBLE]
     def null():

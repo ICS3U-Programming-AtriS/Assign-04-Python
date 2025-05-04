@@ -22,6 +22,7 @@ user_flags = []
 
 
 class Event:
+    # Function that checks whether an event is available or not
     def available(self) -> bool:
         # Check if the user has the prerequisite flags
         for flag in self.inclusion_flags:
@@ -51,25 +52,28 @@ class Event:
         # Once all checks are passed, return True
         return True
 
-    # I decided to keep it as a number
-    weight = 0
-
+    # Function that displays the synopsis of the event
     def synopsis(self):
         print("This is an event!")
 
+    # The event question that is asked to the user after the synopsis
     question: str = "Do you understand? (yes/no): "
+    # LIST OF POSSIBLE DECISIONS FOR THE PLAYER TO MAKE
     # ALL DECISIONS MUST BE UPPERCASE
     decisions: list[str] = ["YES", "NO"]
-
+    # Function that displays the aftermath
     def effect(self, decision):
         print(f"You picked {decision}")
 
-    # Flags
+    # Flag Lists
+    # List of prerequisite flags
     inclusion_flags: list[str] = []
+    # List of blacklisted flags
     exclusion_flags: list[str] = []
 
     # Minimums and Maximums
     # -1 will represent infinity
+    # These values are used to check the availability of the event
     min_population = 0
     max_population = -1
     min_gold = 0
@@ -79,6 +83,10 @@ class Event:
 
     # Event Name
     name = "Event Name"
+
+    # Weight determines the likelihood of an event
+    # I decided to keep it as a number [different from design]
+    weight = 0
 
 
 # Function for adding a flag

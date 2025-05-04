@@ -114,7 +114,7 @@ def pause():
     # Since we are using input()
     input()
 
-
+# DISPLAYS THE TITLE
 def display_title():
     yellow("##################################\n")
     yellow("######## KING OF THE ANTS ########\n")

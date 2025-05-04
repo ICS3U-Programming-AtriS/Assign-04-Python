@@ -113,7 +113,7 @@ def add_event(event: Event):
 # ################################################
 # Creates all the events
 # ################################################
-def make_events() -> list[Event]:
+def make_events():
     # Template event [With Comments]
     def template_event_with_comments():
         # Instantiate new event
@@ -833,9 +833,6 @@ def make_events() -> list[Event]:
     add_event(null())
 
 
-# Call make_events()
-make_events()
-
 # Initialize variable for the current event
 current_event: Event = Event()
 
@@ -935,6 +932,8 @@ def game_loop():
 
 
 def main():
+    # Make all events
+    make_events()
     # Keep on looping indefinitely
     # Until user wins or loses
     while True:

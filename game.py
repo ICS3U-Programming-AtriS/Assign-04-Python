@@ -16,6 +16,8 @@ import math
 population = 100
 gold = 0
 power = 100
+
+# Initalize a list to hold the flags for the user
 user_flags = []
 
 
@@ -907,7 +909,9 @@ def main():
             util.red("You lost. \n")
             # BREAK
             break
+        # Check if population is more than 1 billion
         elif population >= 1_000_000_000:
+            # WIN
             util.green("The kindom is thriving.\n")
             util.green("No one dares to challenge you anymore.\n")
             util.green("The colony shall never fall as long as you rule.\n")

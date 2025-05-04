@@ -91,7 +91,9 @@ class Event:
 
 # Function for adding a flag
 def add_flag(flag_name: str):
+    # Check if flag is not inside user_flags [Not really needed]
     if flag_name not in user_flags:
+        # Append it to the flag list
         user_flags.append(flag_name)
 
 # Initialize list to hold all the events
@@ -100,6 +102,7 @@ event_list: list[Event] = []
 
 # Function for adding event to event_list
 def add_event(event: Event):
+    # Append event to the event list
     event_list.append(event)
 
 
@@ -811,10 +814,10 @@ def make_events() -> list[Event]:
 # Call make_events()
 make_events()
 
-# Initialize current_event
+# Initialize variable for the current event
 current_event: Event = Event()
 
-
+# Function that returns a list of all available events
 def get_unlocked_events() -> list[Event]:
     # Initialize a list to hold the unlocked events
     unlocked_events = []
@@ -827,11 +830,11 @@ def get_unlocked_events() -> list[Event]:
     # Return the completed list
     return unlocked_events
 
-
-def random_event():
+# Function that gets a random unlocked event
+def random_event() -> Event:
     # Get list of available events
     unlocked_events = get_unlocked_events()
-    # Initialize variable to hold sum of weights
+    # Initialize variable to hold the total sum of weights
     sum_of_weights = 0
     # Loop through every unlocked event
     # And add up all the weights
@@ -858,14 +861,14 @@ def random_event():
             # If it does, return the event
             return event
         else:
-            # Increment weight heap by the event's weight
+            # Otherwise, increment weight heap by the event's weight
             weight_heap += event.weight
 
-# Function that displays all stats
+# Function that displays every stat
 def display_stats():
     util.purple(f"POPULATION: {population}, ")
     util.yellow(f"GOLD: {gold}, ")
-    util.red(f"POWER: {power}\n")
+    util.red(f"POWER: {power} \n")
 
 # Function that manages the event
 def process_event():
@@ -875,11 +878,11 @@ def process_event():
     util.display_title()
     # Display Stats
     display_stats()
-    # Display name of event
+    # Display event name
     util.orange(f"~~~ < {current_event.name} > ~~~\n")
     # Display event synopsis
     current_event.synopsis()
-    # Get players decision
+    # Get player's decision
     decision = util.get_decision(current_event.question, current_event.decisions)
     # Clear Terminal
     util.clear_terminal()
@@ -890,7 +893,9 @@ def process_event():
     display_stats()
     # Display name of event
     util.orange(f"~~~ < {current_event.name} > ~~~\n")
+    # Display effect
     current_event.effect(decision)
+    # Pause
     util.pause()
 
 # GAME LOOP

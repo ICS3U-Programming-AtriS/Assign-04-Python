@@ -683,7 +683,7 @@ def make_events():
             global population
             global power
             if decision == "YES":
-                util.grey("The soliders never came back... ")
+                util.grey("The soldiers never came back... ")
                 util.red("[-100 POPULATION] ")
                 population -= 100
                 util.red(f"[-{power//3} POWER] \n")

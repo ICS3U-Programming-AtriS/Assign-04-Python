@@ -17,7 +17,7 @@ population = 100
 gold = 0
 power = 100
 
-# Initalize a list to hold the flags for the user
+# Initialize a list to hold the flags for the user
 user_flags = []
 
 

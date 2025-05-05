@@ -13,9 +13,9 @@ import util
 import math
 
 # Initial stats
-population = 100
-gold = 0
-power = 100
+population = 100000
+gold = 100000
+power = 1000000000
 
 # Initialize a list to hold the flags for the user
 user_flags = []
@@ -661,7 +661,7 @@ def make_events():
         event.exclusion_flags = []
         event.weight = 3
         event.min_gold = 100000
-        event.max_power = 1_000_000_000
+        event.max_power = 1_000_000_000_000
         return event
 
     add_event(reinforcements3())

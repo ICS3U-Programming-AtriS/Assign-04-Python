@@ -13,9 +13,9 @@ import util
 import math
 
 # Initial stats
-population = 100000
-gold = 100000
-power = 1000000000
+population = 100
+gold = 0
+power = 100
 
 # Initialize a list to hold the flags for the user
 user_flags = []

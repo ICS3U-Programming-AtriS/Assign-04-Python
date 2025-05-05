@@ -454,7 +454,7 @@ def make_events():
 
     def fire_nation_extortion():
         event = Event()
-        event.name = "Extortment"
+        event.name = "Extortion"
 
         def event_synopsis():
             util.red("[Fire Nation Scout] Zeko, fire ant\n")
@@ -598,7 +598,7 @@ def make_events():
             elif decision == "PAPER":
                 util.grey("Barbable picked Scissors. \n")
                 util.grey("Scissors beats Paper. You lost the round. \n")
-                util.grey("Barable steals from your treasury. \n")
+                util.grey("Barbable steals from your treasury. \n")
                 util.grey("It is her prize for winning. ")
                 util.red(f"[-{math.floor(gold*0.5 + 1)} GOLD]\n")
                 gold -= math.floor(gold * 0.5 + 1)
@@ -954,7 +954,7 @@ def main():
         elif population >= 1_000_000_000:
             # population >= 1_000_000_000 results in a win
             # WIN
-            util.green("The kindom is thriving.\n")
+            util.green("The kingdom is thriving.\n")
             util.green("No one dares to challenge you anymore.\n")
             util.green("The colony shall never fall as long as you rule.\n")
             util.green("You win. \n")
